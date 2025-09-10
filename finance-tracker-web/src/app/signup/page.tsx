@@ -29,12 +29,11 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
 
-  const supabase = createClient()
-
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setSuccess(null)
+    const supabase = createClient()
     
     const fullPhone = `${selectedCountry.dial_code}${phone}`
 
@@ -64,6 +63,7 @@ export default function SignupPage() {
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    const supabase = createClient()
     
     const fullPhone = `${selectedCountry.dial_code}${phone}`
 
