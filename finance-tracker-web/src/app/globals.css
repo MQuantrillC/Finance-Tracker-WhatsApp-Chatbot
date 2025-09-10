@@ -1,0 +1,99 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@theme {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+}
+ 
+@layer base {
+  :root {
+    /* Acorns-inspired, warm and inviting palette */
+    --background: 48 24% 96%;        /* #F7F6F2 cream */
+    --foreground: 163 33% 28%;       /* #2F5D50 muted dark green */
+
+    --card: 0 0% 100%;               /* default cards white (dashboard cards override to cream) */
+    --card-foreground: 163 33% 28%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 163 33% 28%;
+
+    --primary: 153 48% 44%;          /* #3BA776 soft green */
+    --primary-foreground: 0 0% 100%; /* white */
+
+    --secondary: 48 24% 96%;         /* cream as secondary surface */
+    --secondary-foreground: 163 33% 28%;
+
+    --muted: 0 0% 92%;               /* #EAEAEA */
+    --muted-foreground: 0 0% 69%;    /* #B0B0B0 subtle text */
+
+    --accent: 150 35% 90%;           /* pale green for hovers */
+    --accent-foreground: 163 33% 28%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 92%;              /* #EAEAEA dividers */
+    --input: 0 0% 92%;
+    --ring: 153 48% 44%;             /* primary ring */
+
+    --radius: 1rem;                  /* 16px rounded corners */
+  }
+ 
+  .dark {
+    /* Define dark mode colors here if needed in the future */
+    --background: 210 29% 25%;
+    --foreground: 0 0% 98%;
+
+    --card: 210 29% 25%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 210 29% 25%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 122 39% 40%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 210 29% 25%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 210 29% 25%;
+
+    --accent: 45 88% 50%;
+    --accent-foreground: 210 29% 25%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 80%;
+    --input: 0 0% 80%;
+    --ring: 122 39% 40%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground leading-relaxed;
+  }
+}
