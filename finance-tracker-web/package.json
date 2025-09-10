@@ -30,7 +30,8 @@
     "react-dom": "19.1.0",
     "recharts": "^3.1.2",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "world-countries": "^5.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -47,6 +48,8 @@
     "typescript": "^5"
   },
   "overrides": {
-    "debug": "4.3.4"
+    "debug": "4.3.4",
+    "simple-swizzle": "0.2.2",
+    "is-arrayish": "0.3.2"
   }
 }

@@ -4,18 +4,26 @@ export type Country = {
     dial_code: string;
 };
 
-export const countries: Country[] = [
+// Prefer built-in list; fall back to curated defaults if package absent.
+let list: Country[] = []
+try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const wc = require('world-countries') as Array<{ cca2: string; name: { common: string }, idd?: { root?: string, suffixes?: string[] } }>
+    list = wc
+        .map(c => {
+            const root = c.idd?.root || ''
+            const suff = (c.idd?.suffixes && c.idd.suffixes[0]) || ''
+            const dial = (root + suff) || ''
+            return { name: c.name.common, code: c.cca2.toLowerCase(), dial_code: dial.startsWith('+') ? dial : (dial ? `+${dial}` : '') }
+        })
+        .filter(c => !!c.dial_code)
+        .sort((a, b) => a.name.localeCompare(b.name, 'es'))
+} catch {}
+
+export const countries: Country[] = list.length ? list : [
     { name: "Perú", code: "pe", dial_code: "+51" },
     { name: "Argentina", code: "ar", dial_code: "+54" },
-    { name: "Bolivia", code: "bo", dial_code: "+591" },
-    { name: "Brasil", code: "br", dial_code: "+55" },
-    { name: "Chile", code: "cl", dial_code: "+56" },
-    { name: "Colombia", code: "co", dial_code: "+57" },
-    { name: "Ecuador", code: "ec", dial_code: "+593" },
     { name: "México", code: "mx", dial_code: "+52" },
-    { name: "Paraguay", code: "py", dial_code: "+595" },
-    { name: "Uruguay", code: "uy", dial_code: "+598" },
-    { name: "Venezuela", code: "ve", dial_code: "+58" },
     { name: "Estados Unidos", code: "us", dial_code: "+1" },
-];
+]
 
