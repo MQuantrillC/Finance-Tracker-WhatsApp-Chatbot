@@ -7,7 +7,7 @@ export type Country = {
 // Prefer built-in list; fall back to curated defaults if package absent.
 let list: Country[] = []
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const wc = require('world-countries') as Array<{ cca2: string; name: { common: string }, idd?: { root?: string, suffixes?: string[] } }>
     list = wc
         .map(c => {
