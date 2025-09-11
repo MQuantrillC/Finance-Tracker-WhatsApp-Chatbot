@@ -36,11 +36,15 @@ export default async function DashboardLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
+  // TODO: Re-enable authentication before deploying to production.
+  // This has been temporarily omitted for easier dashboard viewing.
+  /*
   if (!user) {
     redirect("/login")
   }
+  */
 
-  const userName = user.user_metadata?.name || user.email;
+  const userName = user?.user_metadata?.name || user?.email || "Demo User";
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
