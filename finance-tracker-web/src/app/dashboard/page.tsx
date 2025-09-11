@@ -287,7 +287,7 @@ export default function DashboardPage() {
                       fill="#8884d8"
                       dataKey="value"
                       nameKey="name"
-                      label={<CustomPieLabel />}
+                      label={CustomPieLabel}
                     >
                       {expensesByCategory.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
