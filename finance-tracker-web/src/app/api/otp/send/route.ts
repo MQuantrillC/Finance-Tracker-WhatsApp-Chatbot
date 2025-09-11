@@ -44,7 +44,7 @@ export async function POST(req: Request) {
             }
           })
         })
-      } catch (_) {
+      } catch {
         // Fallback silent; code stored regardless
       }
     }
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     // In dev (no Meta creds), return code so user can proceed
     const isDev = !token || !fromPhoneId
     return NextResponse.json({ ok: true, devCode: isDev ? code : undefined })
-  } catch (e) {
+  } catch {
     return NextResponse.json({ message: 'Error interno' }, { status: 500 })
   }
 }

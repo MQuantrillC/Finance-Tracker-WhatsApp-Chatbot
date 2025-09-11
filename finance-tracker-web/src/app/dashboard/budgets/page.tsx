@@ -44,10 +44,6 @@ type Presupuesto = {
   progress: number;
 }
 
-type Perfil = {
-    ingreso_mensual: number;
-}
-
 export default function BudgetsPage() {
   const [category, setCategory] = useState<string>("")
   const [amount, setAmount] = useState<string>("")

@@ -7,8 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { PlusCircle } from "lucide-react"
 import {
   PieChart,
   Pie,
@@ -59,7 +57,17 @@ type Presupuesto = {
 
 const COLORS = ['#166534', '#22c55e', '#86efac', '#dcfce7', '#a7f3d0', '#6ee7b7'];
 
-const CustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index, name }: any) => {
+interface CustomPieLabelProps {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  percent: number;
+  name: string;
+}
+
+const CustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, name }: CustomPieLabelProps) => {
   const RADIAN = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 1.3;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);

@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     delete otpStore.__otp![phone]
     return NextResponse.json({ ok: true })
-  } catch (e) {
+  } catch {
     return NextResponse.json({ message: 'Error interno' }, { status: 500 })
   }
 }

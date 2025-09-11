@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
 // Temporarily disable Supabase session refresh in Edge middleware to avoid runtime failures.
-export async function middleware(_request: NextRequest) {
+export async function middleware() {
   return NextResponse.next()
 }
 
