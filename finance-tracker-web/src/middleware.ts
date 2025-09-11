@@ -1,8 +1,15 @@
-import { NextResponse } from 'next/server'
+import { updateSession } from '@/utils/supabase/middleware'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Temporarily disable Supabase session refresh in Edge middleware to avoid runtime failures.
-export async function middleware() {
-  return NextResponse.next()
+export async function middleware(request: NextRequest) {
+  // TODO: Re-enable authentication before deploying to production.
+  // This has been temporarily omitted for easier dashboard viewing.
+  // return await updateSession(request)
+  return NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  })
 }
 
 export const config = {

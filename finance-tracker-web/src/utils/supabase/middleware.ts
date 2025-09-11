@@ -54,7 +54,9 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  await supabase.auth.getUser()
+  // TODO: Re-enable authentication before deploying to production.
+  // This has been temporarily omitted for easier dashboard viewing.
+  // await supabase.auth.getUser()
 
   return response
 }
