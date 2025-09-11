@@ -138,7 +138,7 @@ export default function BudgetsPage() {
     }
   }
   
-  const formatCurrency = (amount: number) => `S/ ${amount.toFixed(2)}`;
+  const formatCurrency = (amount: number) => `S/ ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   return (
     <div className="space-y-6">

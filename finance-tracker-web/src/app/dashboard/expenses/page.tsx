@@ -150,22 +150,22 @@ export default function ExpensesPage() {
   
   const formatCurrency = (amount: number, currency: string) => {
     const symbol = currency === 'PEN' ? 'S/' : '$';
-    return `${symbol} ${amount.toFixed(2)}`;
+    return `${symbol} ${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="text-base">
-        <CardHeader className="bg-primary/10 rounded-t-2xl">
-          <CardTitle className="text-foreground">Agregar Gasto</CardTitle>
+    <div className="space-y-8">
+      <Card className="text-base shadow-sm">
+        <CardHeader className="bg-primary/10 rounded-t-2xl p-6">
+          <CardTitle className="text-foreground font-semibold">Agregar Gasto</CardTitle>
           <CardDescription>
             Completa los detalles para registrar un nuevo gasto.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleAddExpense} className="grid gap-8">
+        <CardContent className="p-6">
+          <form onSubmit={handleAddExpense} className="grid gap-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 <Label htmlFor="category">Categoría</Label>
                 <Select onValueChange={setCategory} value={category}>
                   <SelectTrigger>
@@ -178,7 +178,7 @@ export default function ExpensesPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 <Label htmlFor="amount">Monto</Label>
                 <Input 
                   id="amount" 
@@ -190,8 +190,8 @@ export default function ExpensesPage() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="grid gap-3">
                 <Label htmlFor="currency">Moneda</Label>
                 <Select onValueChange={setCurrency} value={currency}>
                   <SelectTrigger className="h-12 text-base">
@@ -203,7 +203,7 @@ export default function ExpensesPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="grid gap-2">
+              <div className="grid gap-3">
                 <Label htmlFor="date">Fecha</Label>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -235,11 +235,11 @@ export default function ExpensesPage() {
           </form>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader className="bg-primary/10 rounded-t-2xl">
-          <CardTitle className="text-foreground">Gastos Recientes</CardTitle>
+      <Card className="shadow-sm">
+        <CardHeader className="bg-primary/10 rounded-t-2xl p-6">
+          <CardTitle className="text-foreground font-semibold">Gastos Recientes</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4">
           <Table>
             <TableHeader>
               <TableRow>
@@ -251,13 +251,13 @@ export default function ExpensesPage() {
             <TableBody>
               {expenses.length > 0 ? expenses.map((expense) => (
                 <TableRow key={expense.id}>
-                  <TableCell>{format(new Date(expense.date), "PPP", { locale: es })}</TableCell>
-                  <TableCell>{expense.category}</TableCell>
-                  <TableCell>{formatCurrency(expense.amount, expense.currency)}</TableCell>
+                  <TableCell className="py-4">{format(new Date(expense.date), "PPP", { locale: es })}</TableCell>
+                  <TableCell className="py-4 text-lg">{expense.category}</TableCell>
+                  <TableCell className="py-4">{formatCurrency(expense.amount, expense.currency)}</TableCell>
                 </TableRow>
               )) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="text-center">
+                  <TableCell colSpan={3} className="text-center py-4">
                     Todavía no has registrado ningún gasto.
                   </TableCell>
                 </TableRow>

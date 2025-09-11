@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { CountryCodeSelector } from "@/components/ui/country-code-selector"
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from "next/link"
 import { countries, Country } from "@/lib/countries"
 
@@ -28,14 +28,23 @@ export default function SignupPage() {
   
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [resendCooldown, setResendCooldown] = useState<number>(0)
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return
+    const timer = setInterval(() => setResendCooldown((s) => s - 1), 1000)
+    return () => clearInterval(timer)
+  }, [resendCooldown])
+
+  const getFullPhone = () => `${selectedCountry.dial_code}${phone}`
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
     setSuccess(null)
     const supabase = createClient()
-    
-    const fullPhone = `${selectedCountry.dial_code}${phone}`
+
+    const fullPhone = getFullPhone()
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -52,11 +61,12 @@ export default function SignupPage() {
       setError(error.message)
     } else {
       if (data.user?.identities?.length === 0) {
-        setError("Ya existe un usuario con este número de teléfono.");
-        return;
+        setError("Ya existe un usuario con este número de teléfono.")
+        return
       }
       setSuccess("Te hemos enviado un código de verificación a tu teléfono.")
-      setStep('verify_otp');
+      setStep('verify_otp')
+      setResendCooldown(60)
     }
   }
 
@@ -64,8 +74,7 @@ export default function SignupPage() {
     e.preventDefault()
     setError(null)
     const supabase = createClient()
-    
-    const fullPhone = `${selectedCountry.dial_code}${phone}`
+    const fullPhone = getFullPhone()
 
     const { error } = await supabase.auth.verifyOtp({
       phone: fullPhone,
@@ -74,9 +83,33 @@ export default function SignupPage() {
     })
 
     if (error) {
-      setError("Código de verificación incorrecto. Por favor, intenta de nuevo.")
+      setError("Código de verificación incorrecto o expirado. Por favor, intenta de nuevo.")
     } else {
-      router.push('/login');
+      // Mirror phone verification status into profiles table for bot enforcement
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from('profiles').update({ phone_verified: true, telefono: fullPhone }).eq('id', user.id)
+      }
+      router.push('/login')
+    }
+  }
+
+  const handleResend = async () => {
+    if (resendCooldown > 0) return
+    setError(null)
+    const supabase = createClient()
+    const fullPhone = getFullPhone()
+
+    const { error } = await supabase.auth.resend({
+      type: 'sms',
+      phone: fullPhone,
+    })
+
+    if (error) {
+      setError("No pudimos reenviar el código en este momento. Intenta en unos segundos.")
+    } else {
+      setSuccess("Código reenviado. Revisa tus mensajes.")
+      setResendCooldown(60)
     }
   }
 
@@ -113,6 +146,7 @@ export default function SignupPage() {
                   <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
+                {success && <p className="text-green-600 text-sm">{success}</p>}
                 <Button type="submit" className="w-full">Crear cuenta</Button>
               </div>
             </form>
@@ -124,7 +158,15 @@ export default function SignupPage() {
                   <Input id="otp" type="text" required value={otp} onChange={(e) => setOtp(e.target.value)} />
                 </div>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
-                <Button type="submit" className="w-full">Verificar</Button>
+                {success && <p className="text-green-600 text-sm">{success}</p>}
+                <div className="flex items-center justify-between gap-3">
+                  <Button type="submit" className="w-full">Verificar</Button>
+                </div>
+                <div className="mt-2 text-center text-sm">
+                  <button type="button" onClick={handleResend} disabled={resendCooldown > 0} className="underline disabled:opacity-50">
+                    {resendCooldown > 0 ? `Reenviar en ${resendCooldown}s` : 'Reenviar código'}
+                  </button>
+                </div>
               </div>
             </form>
           )}
